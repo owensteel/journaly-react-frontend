@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useSelector } from 'react-redux'; // Import useSelector hook from react-redux
 import Navbar from './components/Navbar';
 import Welcome from './pages/Welcome';
-import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import { RootState } from './store'; // Adjust based on your store structure
 
@@ -18,7 +17,6 @@ const App: React.FC = () => {
                 <Route path="/" element={
                     isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/welcome" />
                 } />
-                <Route path="/login" element={<Login />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/welcome" element={<Welcome />} />
             </Routes>

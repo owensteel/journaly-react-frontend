@@ -1,0 +1,17 @@
+.welcome-wrapper {
+    display: block;
+    max-width: 500px;
+    width: 100%;
+    margin: 0px auto;
+}
+
+.welcome-wrapper .welcome-hero {
+    display: block;
+    width: 100%;
+    height: 200px;
+    background-image: url(../assets/img/welcome-hero.jpg);
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    margin-bottom: 30px;
+}
