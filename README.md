@@ -1,3 +1,7 @@
+The Typescript + React frontend for my sample resume application, "Journaly".
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## React Scripts
