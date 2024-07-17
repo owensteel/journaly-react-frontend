@@ -1,31 +1,49 @@
 import React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useSelector } from 'react-redux';
+import { AppBar, Toolbar, Button, Typography, Avatar } from '@mui/material';
+import { RootState } from '../store';
 import { Link } from 'react-router-dom';
 
 import "./Navbar.css"
 
 const Navbar: React.FC = () => {
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const { isLoggedIn, name, picture } = useSelector((state: RootState) => state.user);
 
     return (
-        <AppBar position='fixed' color="transparent" sx={{
-            backgroundColor: "#fff"
-        }}>
-            <Toolbar>
-                <Typography variant="h6" component="div" sx={
-                    {
-                        flexGrow: 1
-                    }
-                }>
-                    <Link to="/" className="nav-app-logo">Journaly</Link>
-                </Typography>
-            </Toolbar>
-        </AppBar >
+        <div>
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+            <AppBar position='fixed' color="transparent" sx={{
+                backgroundColor: "#fff"
+            }}>
+                <Toolbar>
+                    <Typography className="journaly-logo" variant="h6" component="div" sx={
+                        {
+                            flexGrow: 1
+                        }
+                    }>
+                        <Link to="/">
+                            <span className="material-symbols-outlined">
+                                edit
+                            </span>
+                            <span className="logo-text">Journaly</span>
+                        </Link>
+                    </Typography>
+                    <div>
+                        {isLoggedIn ? (
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <Typography variant="body1" style={{ marginRight: '10px' }}>
+                                    {name}
+                                </Typography>
+                                <Avatar src={picture} alt={name} />
+                            </div>
+                        ) : (
+                            <Button href="/welcome" color="inherit">Login</Button>
+                        )}
+                    </div>
+                </Toolbar>
+            </AppBar >
+        </div>
     );
 };
 
