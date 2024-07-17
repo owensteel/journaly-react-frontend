@@ -10,6 +10,8 @@ import Cookies from 'js-cookie';
 import { login } from './store/userSlice';
 import axiosAPI from './services/api';
 
+let hasFetchedUser = false
+
 const App: React.FC = () => {
     const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
     const dispatch = useDispatch();
@@ -23,9 +25,15 @@ const App: React.FC = () => {
             source
         */
         const fetchUser = async () => {
+            if (hasFetchedUser) {
+                return
+            }
+
             const oauthToken = Cookies.get('oauth_token');
             if (oauthToken) {
                 try {
+                    hasFetchedUser = true
+
                     const response = await axiosAPI.post('/auth/google', { token: oauthToken });
                     const { authToken, user } = response.data;
 
@@ -42,14 +50,20 @@ const App: React.FC = () => {
         fetchUser();
     }, [dispatch]);
 
-    return (
+    return !hasFetchedUser ? (
+        <div>
+            {/* TODO: loading sequence */}
+        </div>
+    ) : (
         <div>
             <Navbar />
             <Routes>
                 <Route path="/" element={
-                    isLoggedIn ? <Navigate to="/dashboard" /> : <Navigate to="/welcome" />
+                    isLoggedIn ? <Dashboard /> : <Welcome />
                 } />
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/dashboard" element={
+                    isLoggedIn ? <Dashboard /> : <Navigate to="/" />
+                } />
                 <Route path="/welcome" element={<Welcome />} />
             </Routes>
         </div>

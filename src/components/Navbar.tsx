@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { AppBar, Toolbar, Button, Typography, Avatar } from '@mui/material';
 import { RootState } from '../store';
+
 import { Link } from 'react-router-dom';
 
 import "./Navbar.css"
@@ -11,8 +12,6 @@ const Navbar: React.FC = () => {
 
     return (
         <div>
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-
             <AppBar position='fixed' color="transparent" sx={{
                 backgroundColor: "#fff"
             }}>
