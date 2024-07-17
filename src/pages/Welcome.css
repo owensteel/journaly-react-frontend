@@ -15,3 +15,18 @@
     background-repeat: no-repeat;
     margin-bottom: 30px;
 }
+
+.welcome-wrapper h1,
+.welcome-wrapper h2,
+.welcome-wrapper h3,
+.welcome-wrapper h4,
+.welcome-wrapper h5,
+.welcome-wrapper h6 {
+    color: #444;
+    margin-bottom: 16px;
+}
+
+.welcome-wrapper p {
+    margin-bottom: 16px;
+    line-height: 1.6;
+}

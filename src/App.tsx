@@ -2,13 +2,15 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import Navbar from './components/Navbar';
-import Dashboard from './pages/Dashboard';
-import Welcome from './pages/Welcome';
+import { ThemeProvider } from '@mui/material/styles';
 import { RootState } from './store';
 import Cookies from 'js-cookie';
 import { login } from './store/userSlice';
 import axiosAPI from './services/api';
+import Navbar from './components/Navbar';
+import Dashboard from './pages/Dashboard';
+import Welcome from './pages/Welcome';
+import theme from './theme/theme'
 
 const App: React.FC = () => {
     const [userFetched, setUserFetched] = useState(false);
@@ -50,7 +52,7 @@ const App: React.FC = () => {
             {/* TODO: loading sequence */}
         </div>
     ) : (
-        <div>
+        <ThemeProvider theme={theme}>
             <Navbar />
             <Routes>
                 <Route path="/" element={
@@ -61,7 +63,7 @@ const App: React.FC = () => {
                 } />
                 <Route path="/welcome" element={<Welcome />} />
             </Routes>
-        </div>
+        </ThemeProvider>
     );
 };
 
