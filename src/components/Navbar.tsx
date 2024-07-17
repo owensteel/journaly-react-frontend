@@ -12,7 +12,7 @@ const Navbar: React.FC = () => {
 
     return (
         <div>
-            <AppBar position='fixed' color="transparent" sx={{
+            <AppBar elevation={0} position='fixed' color="transparent" sx={{
                 backgroundColor: "#fff"
             }}>
                 <Toolbar>

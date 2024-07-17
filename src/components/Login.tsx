@@ -18,7 +18,6 @@ const Login: React.FC = () => {
 
                 // Set a cookie to keep the user logged in
                 Cookies.set('auth_token', authToken, { expires: 7 });
-                Cookies.set('oauth_token', credentialResponse.credential, { expires: 7 });
 
                 dispatch(login({ name: user.name, picture: user.picture }));
                 navigate('/dashboard');

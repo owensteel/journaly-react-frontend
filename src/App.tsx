@@ -1,5 +1,5 @@
 // App.tsx
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Navbar from './components/Navbar';
@@ -10,47 +10,42 @@ import Cookies from 'js-cookie';
 import { login } from './store/userSlice';
 import axiosAPI from './services/api';
 
-let hasFetchedUser = false
-
 const App: React.FC = () => {
+    const [userFetched, setUserFetched] = useState(false);
     const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        /*
-            Request updated profile info about the user
-            In other cases profile info would be extracted from the
-            authToken, however since this is called on refresh it is
-            worth the time to update the profile data from the OAuth
-            source
-        */
         const fetchUser = async () => {
-            if (hasFetchedUser) {
+            if (userFetched) {
                 return
             }
 
-            const oauthToken = Cookies.get('oauth_token');
-            if (oauthToken) {
+            const authToken = Cookies.get('auth_token');
+            if (authToken) {
                 try {
-                    hasFetchedUser = true
+                    const response = await axiosAPI.get('/auth/user', {
+                        headers: {
+                            Authorization: `Bearer ${authToken}`,
+                        },
+                    });
 
-                    const response = await axiosAPI.post('/auth/google', { token: oauthToken });
-                    const { authToken, user } = response.data;
+                    const { name, picture } = response.data;
+                    dispatch(login({ name, picture }));
 
-                    // Update the auth token
-                    Cookies.set('auth_token', authToken, { expires: 7 });
-
-                    dispatch(login({ name: user.name, picture: user.picture }));
+                    setUserFetched(true);
                 } catch (error) {
                     console.error('Error fetching user data:', error);
                 }
+            } else {
+                setUserFetched(true);
             }
         };
 
         fetchUser();
     }, [dispatch]);
 
-    return !hasFetchedUser ? (
+    return !userFetched ? (
         <div>
             {/* TODO: loading sequence */}
         </div>
