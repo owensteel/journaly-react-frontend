@@ -2,7 +2,7 @@ import React from 'react';
 import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { StaticTimePicker } from '@mui/x-date-pickers/StaticTimePicker';
+import { MobileTimePicker } from '@mui/x-date-pickers/MobileTimePicker';
 
 function formatDate(date: Date): string {
     const year = date.getFullYear();
@@ -18,7 +18,7 @@ const Log: React.FC = () => {
     return (
         <div>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <StaticTimePicker defaultValue={dayjs(formatDate(new Date()))} />
+                <MobileTimePicker defaultValue={dayjs(formatDate(new Date()))} />
             </LocalizationProvider>
         </div>
     );
