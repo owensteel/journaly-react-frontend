@@ -20,7 +20,7 @@ const Navbar: React.FC = () => {
                         {
                             flexGrow: 1
                         }
-                    }>
+                    } color="primary">
                         <Link to="/">
                             <span className="material-symbols-outlined">
                                 edit
