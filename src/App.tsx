@@ -7,6 +7,8 @@ import { RootState } from './store';
 import Cookies from 'js-cookie';
 import { login } from './store/userSlice';
 import axiosAPI from './services/api';
+
+import Loading from './components/Loading';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import Welcome from './pages/Welcome';
@@ -47,22 +49,24 @@ const App: React.FC = () => {
         fetchUser();
     }, [dispatch]);
 
-    return !userFetched ? (
-        <div>
-            {/* TODO: loading sequence */}
-        </div>
-    ) : (
+    return (
         <ThemeProvider theme={theme}>
             <Navbar />
-            <Routes>
-                <Route path="/" element={
-                    isLoggedIn ? <Dashboard /> : <Welcome />
-                } />
-                <Route path="/dashboard" element={
-                    isLoggedIn ? <Dashboard /> : <Navigate to="/" />
-                } />
-                <Route path="/welcome" element={<Welcome />} />
-            </Routes>
+            {!userFetched ? (
+                <div>
+                    <Loading />
+                </div>
+            ) : (
+                <Routes>
+                    <Route path="/" element={
+                        isLoggedIn ? <Dashboard /> : <Welcome />
+                    } />
+                    <Route path="/dashboard" element={
+                        isLoggedIn ? <Dashboard /> : <Navigate to="/" />
+                    } />
+                    <Route path="/welcome" element={<Welcome />} />
+                </Routes>
+            )}
         </ThemeProvider>
     );
 };
