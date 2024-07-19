@@ -1,31 +1,70 @@
 import React, { useState } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Fab } from '@mui/material';
+import { Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import axiosInstance from '../services/api';
 import Cookies from 'js-cookie';
+import dayjs, { Dayjs } from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import { isAfter, startOfToday } from 'date-fns';
+import { useAlert } from './AlertContext';
+
+function formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based in JavaScript
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
 
 interface CreateGoalButtonProps {
     fetchGoalsCallback: () => void;
 }
 
 const CreateGoalButton: React.FC<CreateGoalButtonProps> = ({ fetchGoalsCallback }) => {
+    const { showAlert } = useAlert();
+    const dayJsCurrentDate = dayjs(formatDate(new Date()))
+
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [endDate, setEndDate] = useState(dayJsCurrentDate);
+
+    const handleDateChange = (date: Dayjs) => {
+        const dateString = date.format()
+        if (isAfter(dateString, startOfToday())) {
+            setEndDate(date);
+        } else {
+            showAlert('Please select a date in the future.', 'error', 'Error');
+        }
+    };
 
     const handleClickOpen = () => {
         setOpen(true);
     };
 
     const handleClose = () => {
+        setOpen(false);
         setTitle("")
         setDescription("")
-        setOpen(false);
+        setEndDate(dayJsCurrentDate)
     };
 
     const handleCreateGoal = async () => {
+        if (title.length < 1 || description.length < 1) {
+            showAlert('Please provide a title and description.', 'error', 'Error');
+            return
+        }
+
+        const endDateAsString = endDate.format()
+        if (!isAfter(endDateAsString, startOfToday())) {
+            showAlert('Please select a date in the future.', 'error', 'Error');
+            return
+        }
+
         const authToken = Cookies.get('auth_token');
         try {
-            await axiosInstance.post('/api/goals', { title, description }, {
+            await axiosInstance.post('/api/goals/create', { title, description, endDate: endDateAsString }, {
                 headers: {
                     Authorization: `Bearer ${authToken}`
                 }
@@ -38,7 +77,7 @@ const CreateGoalButton: React.FC<CreateGoalButtonProps> = ({ fetchGoalsCallback 
     };
 
     return (
-        <>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Button sx={{
                 width: "100%",
                 marginBottom: "25px"
@@ -70,6 +109,13 @@ const CreateGoalButton: React.FC<CreateGoalButtonProps> = ({ fetchGoalsCallback 
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     />
+                    <Typography variant="overline" gutterBottom>
+                        End date to aim for
+                    </Typography>
+                    <DateCalendar
+                        value={endDate}
+                        onChange={handleDateChange}
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
@@ -80,7 +126,7 @@ const CreateGoalButton: React.FC<CreateGoalButtonProps> = ({ fetchGoalsCallback 
                     </Button>
                 </DialogActions>
             </Dialog>
-        </>
+        </LocalizationProvider>
     );
 };
 

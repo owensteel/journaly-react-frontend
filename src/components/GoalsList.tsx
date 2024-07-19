@@ -1,6 +1,6 @@
 // src/components/GoalsList.tsx
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, Typography, Container, Box } from '@mui/material';
+import { Card, CardContent, Typography, LinearProgress, Box } from '@mui/material';
 import Cookies from 'js-cookie';
 import axiosInstance from '../services/api';
 import SearchBar from './SearchBar';
@@ -51,14 +51,21 @@ const GoalsList: React.FC = () => {
             <SearchBar query={query} setQuery={setQuery} />
             <Box sx={{ minHeight: "250px" }}>
                 {filteredGoals.map(goal => (
-                    <Card key={goal.id} sx={{ width: '100%', marginTop: 3 }}>
+                    <Card key={goal.id} sx={{ position: 'relative', width: '100%', marginTop: 3 }}>
                         <CardContent>
                             <Typography variant="h5" component="div">
                                 {goal.title}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                                {goal.description}
+                                {goal.description} — XX days left
                             </Typography>
+                            <LinearProgress sx={{
+                                position: "absolute",
+                                width: "100%",
+                                top: 0,
+                                left: 0,
+                                right: 0
+                            }} variant="determinate" value={25 /* (cur_t/com_t) */} />
                         </CardContent>
                     </Card>
                 ))}

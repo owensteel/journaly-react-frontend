@@ -10,6 +10,7 @@ import axiosAPI from './services/api';
 
 import Loading from './components/Loading';
 import Navbar from './components/Navbar';
+import { AlertProvider } from './components/AlertContext';
 import Dashboard from './pages/Dashboard';
 import Welcome from './pages/Welcome';
 import theme from './theme/theme'
@@ -50,24 +51,26 @@ const App: React.FC = () => {
     }, [dispatch]);
 
     return (
-        <ThemeProvider theme={theme}>
-            <Navbar />
-            {!userFetched ? (
-                <div>
-                    <Loading />
-                </div>
-            ) : (
-                <Routes>
-                    <Route path="/" element={
-                        isLoggedIn ? <Dashboard /> : <Welcome />
-                    } />
-                    <Route path="/dashboard" element={
-                        isLoggedIn ? <Dashboard /> : <Navigate to="/" />
-                    } />
-                    <Route path="/welcome" element={<Welcome />} />
-                </Routes>
-            )}
-        </ThemeProvider>
+        <AlertProvider>
+            <ThemeProvider theme={theme}>
+                <Navbar />
+                {!userFetched ? (
+                    <div>
+                        <Loading />
+                    </div>
+                ) : (
+                    <Routes>
+                        <Route path="/" element={
+                            isLoggedIn ? <Dashboard /> : <Welcome />
+                        } />
+                        <Route path="/dashboard" element={
+                            isLoggedIn ? <Dashboard /> : <Navigate to="/" />
+                        } />
+                        <Route path="/welcome" element={<Welcome />} />
+                    </Routes>
+                )}
+            </ThemeProvider>
+        </AlertProvider>
     );
 };
 
