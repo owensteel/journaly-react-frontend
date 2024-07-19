@@ -49,7 +49,7 @@ const GoalsList: React.FC = () => {
         <Box>
             <CreateGoalButton fetchGoalsCallback={fetchGoals}></CreateGoalButton>
             <SearchBar query={query} setQuery={setQuery} />
-            <Container sx={{ minHeight: "250px" }}>
+            <Box sx={{ minHeight: "250px" }}>
                 {filteredGoals.map(goal => (
                     <Card key={goal.id} sx={{ width: '100%', marginTop: 3 }}>
                         <CardContent>
@@ -69,7 +69,7 @@ const GoalsList: React.FC = () => {
                         </Typography>
                     </Box>
                 ) : []}
-            </Container>
+            </Box>
         </Box>
     );
 };

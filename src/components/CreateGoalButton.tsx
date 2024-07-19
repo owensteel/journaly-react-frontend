@@ -17,6 +17,8 @@ const CreateGoalButton: React.FC<CreateGoalButtonProps> = ({ fetchGoalsCallback 
     };
 
     const handleClose = () => {
+        setTitle("")
+        setDescription("")
         setOpen(false);
     };
 
