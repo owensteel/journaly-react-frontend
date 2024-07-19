@@ -1,11 +1,12 @@
 // src/components/GoalsList.tsx
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, Typography, LinearProgress, Box } from '@mui/material';
+import { Card, CardContent, Typography, LinearProgress, Box, Fab } from '@mui/material';
 import Cookies from 'js-cookie';
 import axiosInstance from '../services/api';
 import SearchBar from './SearchBar';
 import Loading from './Loading';
 import CreateGoalButton from './CreateGoalButton';
+import { useNavigate } from 'react-router-dom';
 
 function getTimeDifferenceString(date1: Date, date2: Date): string {
     const diff = date2.getTime() - date1.getTime();
@@ -59,6 +60,8 @@ interface Goal {
 }
 
 const GoalsList: React.FC = () => {
+    const navigate = useNavigate();
+
     const [goals, setGoals] = useState<Goal[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [query, setQuery] = useState<string>('');
@@ -118,6 +121,28 @@ const GoalsList: React.FC = () => {
                             }} variant="determinate" value={
                                 getTimeCompletionPercentage(new Date(goal.created_at), new Date(goal.end_date))
                             } />
+                            <Fab
+                                sx={{ float: 'right', margin: 1, marginBottom: 3 }}
+                                onClick={() => {
+                                    navigate(`/progress/${goal.id}`)
+                                }}
+                            >
+                                <span className="material-symbols-outlined">
+                                    bar_chart
+                                </span>
+                            </Fab>
+                            <Fab
+                                sx={{ float: 'right', margin: 1, marginBottom: 3 }}
+                                color="primary"
+                                onClick={() => {
+                                    navigate(`/journal/${goal.id}`)
+                                }}
+                            /* TODO: should change colour depending on whether a journal entry has been made for the day */
+                            >
+                                <span className="material-symbols-outlined">
+                                    book_5
+                                </span>
+                            </Fab>
                         </CardContent>
                     </Card>
                 ))}
