@@ -3,17 +3,17 @@ import React from 'react';
 import { TextField, InputAdornment } from '@mui/material';
 
 interface SearchBarProps {
-    searchTerm: string;
-    onSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    query: string;
+    setQuery: (query: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, onSearch }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ query, setQuery }) => {
     return (
         <TextField
             variant="outlined"
             placeholder="Search..."
-            value={searchTerm}
-            onChange={onSearch}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
             InputProps={{
                 startAdornment: (
                     <InputAdornment position="start">

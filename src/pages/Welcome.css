@@ -1,8 +1,17 @@
 .welcome-wrapper {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: calc(100% - 40px);
+    padding: 20px;
+}
+
+.welcome-container {
     display: block;
-    max-width: 500px;
     width: 100%;
-    margin: 0px auto;
+    max-width: 500px;
 }
 
 .welcome-wrapper .welcome-hero {

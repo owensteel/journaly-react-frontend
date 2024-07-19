@@ -1,23 +1,16 @@
 // Dashboard
-import React, { useState } from 'react';
-import SearchBar from '../components/SearchBar';
-import { Container, Typography } from '@mui/material';
+import React from 'react';
+import { Container, Typography, Divider } from '@mui/material';
+import GoalsList from '../components/GoalsList';
 
 const Dashboard: React.FC = () => {
-    const [searchTerm, setSearchTerm] = useState('');
-
-    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(event.target.value);
-        console.log('Search Term:', event.target.value);
-    };
-
     return (
-        <Container>
-            <Typography variant="h5" gutterBottom>
-                Your journals
+        <Container sx={{ marginTop: "95px", maxWidth: "500px" }}>
+            <Typography variant="overline" gutterBottom>
+                Your goals
             </Typography>
-            <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
-            {/* Add your search results or other content here */}
+            <GoalsList />
+            <Divider sx={{ marginTop: 3 }} />
         </Container>
     );
 };
