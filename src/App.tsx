@@ -12,6 +12,7 @@ import Loading from './components/Loading';
 import Navbar from './components/Navbar';
 import { AlertProvider } from './components/AlertContext';
 import Dashboard from './pages/Dashboard';
+import Journal from './pages/Journal';
 import Welcome from './pages/Welcome';
 import theme from './theme/theme'
 
@@ -65,6 +66,9 @@ const App: React.FC = () => {
                         } />
                         <Route path="/dashboard" element={
                             isLoggedIn ? <Dashboard /> : <Navigate to="/" />
+                        } />
+                        <Route path="/journal/:goalId" element={
+                            isLoggedIn ? <Journal /> : <Navigate to="/" />
                         } />
                         <Route path="/welcome" element={<Welcome />} />
                     </Routes>
