@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
-import { useParams, } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Fab, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { useParams } from 'react-router-dom';
 import axiosInstance from '../services/api';
 import Cookies from 'js-cookie';
+import Loading from './Loading';
+import { JournalEntry } from '../services/interfaces';
 
-interface CreateJournalEntryButtonProps {
+interface EditJournalEntryButtonProps {
     fetchJournalEntriesCallback: () => void;
+    entryData: JournalEntry;
 }
 
-const CreateJournalEntryButton: React.FC<CreateJournalEntryButtonProps> = ({ fetchJournalEntriesCallback }) => {
+const EditJournalEntryButton: React.FC<EditJournalEntryButtonProps> = ({ fetchJournalEntriesCallback, entryData }) => {
     const { goalId } = useParams<{ goalId: string }>();
 
     const [open, setOpen] = useState(false);
@@ -16,6 +19,7 @@ const CreateJournalEntryButton: React.FC<CreateJournalEntryButtonProps> = ({ fet
 
     const handleClickOpen = () => {
         setOpen(true);
+        setText(entryData.text)
     };
 
     const handleClose = () => {
@@ -27,27 +31,29 @@ const CreateJournalEntryButton: React.FC<CreateJournalEntryButtonProps> = ({ fet
     const handleSubmit = async () => {
         const authToken = Cookies.get('auth_token');
         try {
-            await axiosInstance.post('/api/journal/create_entry', { text, goalId }, {
+            await axiosInstance.put(`/api/journal/edit_entry/${entryData.id}`, { text, goalId }, {
                 headers: {
                     Authorization: `Bearer ${authToken}`
                 }
             });
             handleClose();
         } catch (error) {
-            console.error('Error creating journal entry:', error);
+            console.error('Error updating journal entry:', error);
         }
     };
 
     return (
         <div>
-            <Button sx={{ marginTop: 2 }} variant="contained" color="primary" onClick={handleClickOpen}>
+            <Fab
+                sx={{ float: 'right', margin: 1, marginBottom: 3 }}
+                onClick={handleClickOpen}
+            >
                 <span className="material-symbols-outlined">
-                    add
+                    edit
                 </span>
-                Create Journal Entry
-            </Button>
+            </Fab>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Create a new entry</DialogTitle>
+                <DialogTitle>Edit an entry</DialogTitle>
                 <DialogContent>
                     <TextField
                         autoFocus
@@ -74,4 +80,4 @@ const CreateJournalEntryButton: React.FC<CreateJournalEntryButtonProps> = ({ fet
     );
 };
 
-export default CreateJournalEntryButton;
+export default EditJournalEntryButton;

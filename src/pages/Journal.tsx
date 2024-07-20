@@ -7,6 +7,7 @@ import Loading from "../components/Loading"
 import { Journal } from "../services/interfaces"
 import { getTimeDifferenceString } from "../utils/timestampUtils"
 import CreateJournalEntryButton from '../components/CreateJournalEntryButton';
+import EditJournalEntryButton from '../components/EditJournalEntryButton';
 
 const JournalPage: React.FC = () => {
     const navigate = useNavigate();
@@ -85,16 +86,7 @@ const JournalPage: React.FC = () => {
                                 <Typography variant="body2" color="text.secondary">
                                     {new Date(journalEntry.created_at).toDateString()}
                                 </Typography>
-                                <Fab
-                                    sx={{ float: 'right', margin: 1, marginBottom: 3 }}
-                                    onClick={() => {
-                                        /* Trigger editing */
-                                    }}
-                                >
-                                    <span className="material-symbols-outlined">
-                                        edit
-                                    </span>
-                                </Fab>
+                                <EditJournalEntryButton entryData={journalEntry} fetchJournalEntriesCallback={fetchJournal} />
                             </CardContent>
                         </Card>
                     ))}
