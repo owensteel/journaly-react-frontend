@@ -3,12 +3,14 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } 
 import { useParams, } from 'react-router-dom';
 import axiosInstance from '../services/api';
 import Cookies from 'js-cookie';
+import { useAlert } from './AlertContext';
 
 interface CreateJournalEntryButtonProps {
     fetchJournalEntriesCallback: () => void;
 }
 
 const CreateJournalEntryButton: React.FC<CreateJournalEntryButtonProps> = ({ fetchJournalEntriesCallback }) => {
+    const { showAlert } = useAlert();
     const { goalId } = useParams<{ goalId: string }>();
 
     const [open, setOpen] = useState(false);
@@ -25,6 +27,11 @@ const CreateJournalEntryButton: React.FC<CreateJournalEntryButtonProps> = ({ fet
     };
 
     const handleSubmit = async () => {
+        if (text.length < 1) {
+            showAlert('Please provide text.', 'error', 'Error');
+            return
+        }
+
         const authToken = Cookies.get('auth_token');
         try {
             await axiosInstance.post('/api/journal/create_entry', { text, goalId }, {

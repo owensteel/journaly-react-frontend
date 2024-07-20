@@ -1,10 +1,11 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
-import { Snackbar, Alert, AlertTitle } from '@mui/material';
+import { Snackbar, Alert, AlertTitle, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
 
 type AlertSeverity = 'error' | 'warning' | 'info' | 'success';
 
 interface AlertContextType {
     showAlert: (message: string, severity: AlertSeverity, title?: string) => void;
+    confirm: (message: string, title?: string) => Promise<boolean>;
 }
 
 const AlertContext = createContext<AlertContextType | undefined>(undefined);
@@ -29,23 +30,56 @@ export const AlertProvider: React.FC<AlertProviderProps> = ({ children }) => {
         open: false,
     });
 
+    const [confirmDialog, setConfirmDialog] = useState<{ message: string, title?: string, open: boolean, resolve?: (value: boolean) => void }>({
+        message: '',
+        title: '',
+        open: false,
+    });
+
     const showAlert = (message: string, severity: AlertSeverity, title?: string) => {
         setAlert({ message, severity, title, open: true });
     };
 
-    const handleClose = () => {
+    const handleCloseAlert = () => {
         setAlert({ ...alert, open: false });
     };
 
+    const confirm = (message: string, title?: string): Promise<boolean> => {
+        return new Promise((resolve) => {
+            setConfirmDialog({ message, title, open: true, resolve });
+        });
+    };
+
+    const handleConfirm = (response: boolean) => {
+        if (confirmDialog.resolve) {
+            confirmDialog.resolve(response);
+        }
+        setConfirmDialog({ ...confirmDialog, open: false });
+    };
+
     return (
-        <AlertContext.Provider value={{ showAlert }}>
+        <AlertContext.Provider value={{ showAlert, confirm }}>
             {children}
-            <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity={alert.severity} sx={{ width: '100%' }}>
+            <Snackbar open={alert.open} autoHideDuration={6000} onClose={handleCloseAlert}>
+                <Alert onClose={handleCloseAlert} severity={alert.severity} sx={{ width: '100%' }}>
                     {alert.title && <AlertTitle>{alert.title}</AlertTitle>}
                     {alert.message}
                 </Alert>
             </Snackbar>
+            <Dialog open={confirmDialog.open} onClose={() => handleConfirm(false)}>
+                {confirmDialog.title && <DialogTitle>{confirmDialog.title}</DialogTitle>}
+                <DialogContent>
+                    <DialogContentText>{confirmDialog.message}</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => handleConfirm(false)} color="secondary">
+                        Cancel
+                    </Button>
+                    <Button onClick={() => handleConfirm(true)} color="primary">
+                        Confirm
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </AlertContext.Provider>
     );
 };

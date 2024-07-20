@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Fab, Typography, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import React, { useState } from 'react';
+import { Fab, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import axiosInstance from '../services/api';
 import Cookies from 'js-cookie';
-import Loading from './Loading';
 import { JournalEntry } from '../services/interfaces';
+import { useAlert } from './AlertContext';
 
 interface EditJournalEntryButtonProps {
     fetchJournalEntriesCallback: () => void;
@@ -12,6 +12,8 @@ interface EditJournalEntryButtonProps {
 }
 
 const EditJournalEntryButton: React.FC<EditJournalEntryButtonProps> = ({ fetchJournalEntriesCallback, entryData }) => {
+    const { showAlert, confirm } = useAlert();
+
     const { goalId } = useParams<{ goalId: string }>();
 
     const [open, setOpen] = useState(false);
@@ -29,6 +31,15 @@ const EditJournalEntryButton: React.FC<EditJournalEntryButtonProps> = ({ fetchJo
     };
 
     const handleSubmit = async () => {
+        if (text.length < 1) {
+            // Does user mean to delete the entry?
+            const userConfirmed = await confirm('Do you want to delete this Entry?', 'Entry deletion');
+            if (!userConfirmed) {
+                // No, stop here
+                return
+            }
+        }
+
         const authToken = Cookies.get('auth_token');
         try {
             await axiosInstance.put(`/api/journal/edit_entry/${entryData.id}`, { text, goalId }, {
