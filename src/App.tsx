@@ -7,14 +7,14 @@ import { RootState } from './store';
 import Cookies from 'js-cookie';
 import { login } from './store/userSlice';
 import axiosAPI from './services/api';
-
+import theme from './theme/theme'
 import Loading from './components/Loading';
 import Navbar from './components/Navbar';
 import { AlertProvider } from './components/AlertContext';
 import Dashboard from './pages/Dashboard';
 import Journal from './pages/Journal';
 import Welcome from './pages/Welcome';
-import theme from './theme/theme'
+import NotFound from './pages/NotFound';
 
 const App: React.FC = () => {
     const [userFetched, setUserFetched] = useState(false);
@@ -71,6 +71,8 @@ const App: React.FC = () => {
                             isLoggedIn ? <Journal /> : <Navigate to="/" />
                         } />
                         <Route path="/welcome" element={<Welcome />} />
+                        {/* Catch-all route for 404 */}
+                        <Route path="*" element={<NotFound />} />
                     </Routes>
                 )}
             </ThemeProvider>
