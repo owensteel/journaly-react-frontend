@@ -88,7 +88,7 @@ const CreateGoalButton: React.FC<CreateGoalButtonProps> = ({ fetchGoalsCallback 
                     <TextField
                         autoFocus
                         margin="dense"
-                        label="Title"
+                        label={t('createGoalDialogTitleLabel')}
                         type="text"
                         fullWidth
                         variant="outlined"
@@ -97,7 +97,7 @@ const CreateGoalButton: React.FC<CreateGoalButtonProps> = ({ fetchGoalsCallback 
                     />
                     <TextField
                         margin="dense"
-                        label="Description"
+                        label={t('createGoalDialogDescriptionLabel')}
                         type="text"
                         fullWidth
                         variant="outlined"

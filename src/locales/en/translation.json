@@ -14,6 +14,8 @@
     "createGoalProvideTitleAndDescription": "Please provide a title and description.",
     "createGoalButtonText": "Create Goal",
     "createGoalDialogHeader": "Create a new Goal",
+    "createGoalDialogTitleLabel": "Title",
+    "createGoalDialogDescriptionLabel": "Description",
     "createGoalDialogEndDateLabel": "End date to aim for",
     "createGoalDialogCreate": "Create",
     "createJournalEntryProvideText": "Please provide text.",
