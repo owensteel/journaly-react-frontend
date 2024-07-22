@@ -8,7 +8,7 @@ import Loading from './Loading';
 import CreateGoalButton from './CreateGoalButton';
 import { useNavigate } from 'react-router-dom';
 import { Goal } from "../services/interfaces"
-import { getTimeDifferenceString, getTimeCompletionPercentage } from "../utils/timestampUtils"
+import { getTimeDifferenceToNow, getTimeDifferenceString, getTimeCompletionPercentage } from "../utils/timestampUtils"
 
 const GoalsList: React.FC = () => {
     const navigate = useNavigate();
@@ -40,6 +40,13 @@ const GoalsList: React.FC = () => {
         goal.title.toLowerCase().includes(query.toLowerCase())
     );
 
+    // Sort by closeness of end date, closest first
+    const sortedGoals = filteredGoals
+        .map(goal => ({ goal, timeDiff: getTimeDifferenceToNow(goal.end_date) }))
+        .sort((a, b) => b.timeDiff - a.timeDiff)
+        .map(({ goal }) => goal);
+
+    // Loading spinner
     if (loading) {
         return <Loading />;
     }
@@ -49,7 +56,7 @@ const GoalsList: React.FC = () => {
             <CreateGoalButton fetchGoalsCallback={fetchGoals}></CreateGoalButton>
             <SearchBar query={query} setQuery={setQuery} />
             <Box sx={{ minHeight: "250px" }}>
-                {filteredGoals.map(goal => (
+                {sortedGoals.map(goal => (
                     <Card key={goal.id} sx={{ position: 'relative', width: '100%', marginTop: 3 }}>
                         <CardContent>
                             <Typography variant="h5" component="div">
@@ -97,7 +104,7 @@ const GoalsList: React.FC = () => {
                         </CardContent>
                     </Card>
                 ))}
-                {filteredGoals.length < 1 ? (
+                {sortedGoals.length < 1 ? (
                     <Box padding={5}>
                         <Typography variant="body2" color="text.secondary">
                             No goals here!

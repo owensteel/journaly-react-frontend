@@ -43,4 +43,8 @@ function getTimeCompletionPercentage(startDate: Date, endDate: Date, currentDate
     return Math.min(100, Math.max(0, completionPercentage));
 }
 
-export { getTimeDifferenceString, getTimeCompletionPercentage }
+const getTimeDifferenceToNow = (timestamp: string) => {
+    return new Date().getTime() - new Date(timestamp).getTime()
+}
+
+export { getTimeDifferenceString, getTimeCompletionPercentage, getTimeDifferenceToNow }
