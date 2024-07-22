@@ -1,7 +1,10 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:3001', // Adjust based on your backend URL
+    baseURL: window.location.hostname == "localhost" ? "http://localhost:3001" : "http://191.101.81.26:3001/",
 });
 
 export default api;
+
+
+// certbot certonly --manual -d 'bilim.bi,*.bilim.bi'
