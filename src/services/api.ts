@@ -5,6 +5,3 @@ const api = axios.create({
 });
 
 export default api;
-
-
-// certbot certonly --manual -d 'bilim.bi,*.bilim.bi'
