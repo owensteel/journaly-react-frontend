@@ -4,6 +4,7 @@ interface Goal {
     id: number;
     title: string;
     description: string;
+    completed: boolean;
     end_date: string;
     created_at: string;
 }

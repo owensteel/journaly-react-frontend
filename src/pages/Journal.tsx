@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Card, CardContent, Fab, Box, Container, Typography, Divider, Button, Toolbar } from '@mui/material';
+import { Card, CardContent, Box, Container, Typography, Divider, Button, Toolbar } from '@mui/material';
 import Cookies from 'js-cookie';
 import axiosInstance from '../services/api';
 import Loading from "../components/Loading"
@@ -45,6 +45,29 @@ const JournalPage: React.FC = () => {
         )
     }
 
+    const MarkGoalCompletedButton = () => {
+        return (
+            <Button sx={{ marginTop: 2 }} onClick={async () => {
+                setLoading(true);
+                await axiosInstance.post('/api/goals/toggle_completed', { goalId }, {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`
+                    }
+                });
+                fetchJournal();
+            }}>
+                <span style={{ verticalAlign: 'middle' }} className="material-symbols-outlined">
+                    {journal.goal.completed ? "close" : "check"}
+                </span>
+                <span style={{ verticalAlign: 'middle', marginLeft: '7.5px' }}>
+                    {journal.goal.completed ?
+                        t('goalMarkIncompleteButtonText') :
+                        t('goalMarkCompleteButtonText')}
+                </span>
+            </Button>
+        )
+    }
+
     // Sort entries, newest first
     const journalEntries = journal.entries
     journalEntries.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
@@ -68,15 +91,19 @@ const JournalPage: React.FC = () => {
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                         {journal.goal.description} — {
-                            getTimeDifferenceString(
-                                new Date(),
-                                new Date(journal.goal.end_date),
-                                t
-                            )
+                            journal.goal.completed ? (
+                                <strong>{t('goalDescriptionCompleted')}</strong>
+                            ) :
+                                getTimeDifferenceString(
+                                    new Date(),
+                                    new Date(journal.goal.end_date),
+                                    t
+                                )
                         }
                     </Typography>
+                    <MarkGoalCompletedButton />
                     {
-                        contentType !== "chart" ? (
+                        (contentType !== "chart" && !journal.goal.completed) ? (
                             <CreateJournalEntryButton fetchJournalEntriesCallback={fetchJournal} />
                         ) : (
                             <></>
