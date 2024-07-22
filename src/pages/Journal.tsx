@@ -6,6 +6,7 @@ import axiosInstance from '../services/api';
 import Loading from "../components/Loading"
 import { Journal } from "../services/interfaces"
 import { getTimeDifferenceString } from "../utils/timestampUtils"
+import JournalReviewChart from '../components/JournalReviewChart'
 import CreateJournalEntryButton from '../components/CreateJournalEntryButton';
 import EditJournalEntryButton from '../components/EditJournalEntryButton';
 
@@ -16,6 +17,7 @@ const JournalPage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const authToken = Cookies.get('auth_token');
     const { goalId } = useParams<{ goalId: string }>();
+    const { contentType } = useParams<{ contentType: string }>();
 
     const fetchJournal = async () => {
         try {
@@ -70,36 +72,57 @@ const JournalPage: React.FC = () => {
                             )
                         }
                     </Typography>
-                    <CreateJournalEntryButton fetchJournalEntriesCallback={fetchJournal} />
+                    {
+                        contentType !== "chart" ? (
+                            <CreateJournalEntryButton fetchJournalEntriesCallback={fetchJournal} />
+                        ) : (
+                            <></>
+                        )
+                    }
                 </Box>
-                <Divider sx={{ marginTop: 3, marginBottom: 3 }} />
-                <Typography variant="overline" gutterBottom>
-                    Journal entries for this Goal
-                </Typography>
-                <Box sx={{ minHeight: "250px" }}>
-                    {journalEntries.map(journalEntry => (
-                        <Card key={journalEntry.id} sx={{ position: 'relative', width: '100%', marginTop: 3 }}>
-                            <CardContent>
-                                <Typography variant="body1" color="text.primary">
-                                    {journalEntry.text}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    {new Date(journalEntry.created_at).toDateString()}
-                                </Typography>
-                                <EditJournalEntryButton entryData={journalEntry} fetchJournalEntriesCallback={fetchJournal} />
-                            </CardContent>
-                        </Card>
-                    ))}
-                    {journal.entries.length < 1 ? (
-                        <Box padding={5}>
-                            <Typography variant="body2" color="text.secondary">
-                                No journal entries.
-                            </Typography>
-                        </Box>
-                    ) : []}
-                </Box>
-                <Divider sx={{ marginTop: 3, marginBottom: 3 }} />
             </Container>
+            <Divider sx={{ marginTop: 3, marginBottom: 3 }} />
+            {
+                contentType == "chart" ? (
+                    /* Chart */
+                    <Container>
+                        <Typography variant="overline" gutterBottom>
+                            Review chart
+                        </Typography>
+                        <JournalReviewChart entries={journalEntries} />
+                    </Container>
+                ) : (
+                    /* Entries */
+                    <Container>
+                        <Typography variant="overline" gutterBottom>
+                            Journal entries for this Goal
+                        </Typography>
+                        <Box sx={{ minHeight: "250px" }}>
+                            {journalEntries.map(journalEntry => (
+                                <Card key={journalEntry.id} sx={{ position: 'relative', width: '100%', marginTop: 3 }}>
+                                    <CardContent>
+                                        <Typography variant="body1" color="text.primary">
+                                            {journalEntry.text}
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            {new Date(journalEntry.created_at).toDateString()}
+                                        </Typography>
+                                        <EditJournalEntryButton entryData={journalEntry} fetchJournalEntriesCallback={fetchJournal} />
+                                    </CardContent>
+                                </Card>
+                            ))}
+                            {journal.entries.length < 1 ? (
+                                <Box padding={5}>
+                                    <Typography variant="body2" color="text.secondary">
+                                        No journal entries.
+                                    </Typography>
+                                </Box>
+                            ) : []}
+                        </Box>
+                        <Divider sx={{ marginTop: 3, marginBottom: 3 }} />
+                    </Container>
+                )
+            }
         </div>
     );
 };

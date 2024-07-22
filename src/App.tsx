@@ -67,7 +67,7 @@ const App: React.FC = () => {
                         <Route path="/dashboard" element={
                             isLoggedIn ? <Dashboard /> : <Navigate to="/" />
                         } />
-                        <Route path="/journal/:goalId" element={
+                        <Route path="/journal/:goalId/:contentType" element={
                             isLoggedIn ? <Journal /> : <Navigate to="/" />
                         } />
                         <Route path="/welcome" element={<Welcome />} />

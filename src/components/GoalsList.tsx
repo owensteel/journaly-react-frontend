@@ -75,7 +75,7 @@ const GoalsList: React.FC = () => {
                             <Fab
                                 sx={{ float: 'right', margin: 1, marginBottom: 3 }}
                                 onClick={() => {
-                                    navigate(`/progress/${goal.id}`)
+                                    navigate(`/journal/${goal.id}/chart`)
                                 }}
                             >
                                 <span className="material-symbols-outlined">
@@ -86,7 +86,7 @@ const GoalsList: React.FC = () => {
                                 sx={{ float: 'right', margin: 1, marginBottom: 3 }}
                                 color="primary"
                                 onClick={() => {
-                                    navigate(`/journal/${goal.id}`)
+                                    navigate(`/journal/${goal.id}/entries`)
                                 }}
                             /* TODO: should change colour depending on whether a journal entry has been made for the day */
                             >
