@@ -1,17 +1,20 @@
-// SearchBar.tsx
+// GoalsListSearchBar.tsx
 import React from 'react';
 import { TextField, InputAdornment } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
-interface SearchBarProps {
+interface GoalsListSearchBarProps {
     query: string;
     setQuery: (query: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ query, setQuery }) => {
+const GoalsListSearchBar: React.FC<GoalsListSearchBarProps> = ({ query, setQuery }) => {
+    const { t } = useTranslation();
+
     return (
         <TextField
             variant="outlined"
-            placeholder="Search..."
+            placeholder={t('goalsListSearchBarPlaceholder')}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             InputProps={{
@@ -28,4 +31,4 @@ const SearchBar: React.FC<SearchBarProps> = ({ query, setQuery }) => {
     );
 };
 
-export default SearchBar;
+export default GoalsListSearchBar;

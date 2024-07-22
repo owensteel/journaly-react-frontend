@@ -4,12 +4,14 @@ import { useParams, } from 'react-router-dom';
 import axiosInstance from '../services/api';
 import Cookies from 'js-cookie';
 import { useAlert } from './AlertContext';
+import { useTranslation } from 'react-i18next';
 
 interface CreateJournalEntryButtonProps {
     fetchJournalEntriesCallback: () => void;
 }
 
 const CreateJournalEntryButton: React.FC<CreateJournalEntryButtonProps> = ({ fetchJournalEntriesCallback }) => {
+    const { t } = useTranslation();
     const { showAlert } = useAlert();
     const { goalId } = useParams<{ goalId: string }>();
 
@@ -28,7 +30,7 @@ const CreateJournalEntryButton: React.FC<CreateJournalEntryButtonProps> = ({ fet
 
     const handleSubmit = async () => {
         if (text.length < 1) {
-            showAlert('Please provide text.', 'error', 'Error');
+            showAlert(t('createJournalEntryProvideText'), 'error', 'Error');
             return
         }
 
@@ -51,15 +53,15 @@ const CreateJournalEntryButton: React.FC<CreateJournalEntryButtonProps> = ({ fet
                 <span className="material-symbols-outlined">
                     add
                 </span>
-                Create Journal Entry
+                {t('createJournalEntryButtonText')}
             </Button>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Create a new entry</DialogTitle>
+                <DialogTitle>{t('createJournalEntryDialogHeader')}</DialogTitle>
                 <DialogContent>
                     <TextField
                         autoFocus
                         margin="dense"
-                        label="Text"
+                        label={t('createJournalEntryDialogTextLabel')}
                         type="text"
                         fullWidth
                         value={text}
@@ -70,10 +72,10 @@ const CreateJournalEntryButton: React.FC<CreateJournalEntryButtonProps> = ({ fet
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="secondary">
-                        Cancel
+                        {t('alertContextCancel')}
                     </Button>
                     <Button onClick={handleSubmit} color="primary">
-                        Save
+                        {t('createJournalEntryDialogSave')}
                     </Button>
                 </DialogActions>
             </Dialog>

@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 import { Snackbar, Alert, AlertTitle, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 type AlertSeverity = 'error' | 'warning' | 'info' | 'success';
 
@@ -23,6 +24,8 @@ interface AlertProviderProps {
 }
 
 export const AlertProvider: React.FC<AlertProviderProps> = ({ children }) => {
+    const { t } = useTranslation();
+
     const [alert, setAlert] = useState<{ message: string, severity: AlertSeverity, title?: string, open: boolean }>({
         message: '',
         severity: 'info',
@@ -73,10 +76,10 @@ export const AlertProvider: React.FC<AlertProviderProps> = ({ children }) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => handleConfirm(false)} color="secondary">
-                        Cancel
+                        {t('alertContextCancel')}
                     </Button>
                     <Button onClick={() => handleConfirm(true)} color="primary">
-                        Confirm
+                        {t('alertContextConfirm')}
                     </Button>
                 </DialogActions>
             </Dialog>

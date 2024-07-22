@@ -2,12 +2,13 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { AppBar, Toolbar, Button, Typography, Avatar } from '@mui/material';
 import { RootState } from '../store';
-
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import "./Navbar.css"
 
 const Navbar: React.FC = () => {
+    const { t } = useTranslation();
     const { isLoggedIn, name, picture } = useSelector((state: RootState) => state.user);
 
     return (
@@ -37,7 +38,7 @@ const Navbar: React.FC = () => {
                                 <Avatar src={picture} alt={name} />
                             </div>
                         ) : (
-                            <Button href="/welcome" color="inherit">Login</Button>
+                            <Button href="/welcome" color="inherit">{t('navbarLoginButtonText')}</Button>
                         )}
                     </div>
                 </Toolbar>

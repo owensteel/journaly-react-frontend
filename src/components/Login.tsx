@@ -6,8 +6,10 @@ import { login } from '../store/userSlice';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../services/api';
 import { useAlert } from './AlertContext';
+import { useTranslation } from 'react-i18next';
 
 const Login: React.FC = () => {
+    const { t } = useTranslation();
     const { showAlert } = useAlert();
 
     const dispatch = useDispatch();
@@ -15,7 +17,7 @@ const Login: React.FC = () => {
 
     const handleLoginFailure = () => {
         console.error('Login failed');
-        showAlert('Something went wrong. Please try again.', 'error', 'Error');
+        showAlert(t('loginDialogSomethingWentWrong'), 'error', 'Error');
     };
 
     const handleLoginSuccess = async (credentialResponse: CredentialResponse) => {

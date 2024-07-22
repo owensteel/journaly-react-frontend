@@ -1,6 +1,7 @@
 // Common utils for timestamps
 
-function getTimeDifferenceString(date1: Date, date2: Date): string {
+function getTimeDifferenceString(date1: Date, date2: Date, t: (refKey: string) => {}): string {
+
     const diff = date2.getTime() - date1.getTime();
     const diffAbs = Math.abs(diff);
 
@@ -12,21 +13,21 @@ function getTimeDifferenceString(date1: Date, date2: Date): string {
 
     let result = '';
     if (weeks > 0) {
-        result = `${weeks} week${weeks > 1 ? 's' : ''}`;
+        result = `${weeks} ${t('utilsTimestampDifferenceStringWeek' + (weeks > 1 ? 's' : ''))}`;
     } else if (days > 0) {
-        result = `${days} day${days > 1 ? 's' : ''}`;
+        result = `${days} ${t('utilsTimestampDifferenceStringDay' + (days > 1 ? 's' : ''))}`;
     } else if (hours > 0) {
-        result = `${hours} hour${hours > 1 ? 's' : ''}`;
+        result = `${hours} ${t('utilsTimestampDifferenceStringHour' + (hours > 1 ? 's' : ''))}`;
     } else if (minutes > 0) {
-        result = `${minutes} minute${minutes > 1 ? 's' : ''}`;
+        result = `${minutes} ${t('utilsTimestampDifferenceStringMinute' + (minutes > 1 ? 's' : ''))}`;
     } else {
-        result = `${seconds} second${seconds > 1 ? 's' : ''}`;
+        result = `${seconds} ${t('utilsTimestampDifferenceStringSecond' + (seconds > 1 ? 's' : ''))}`;
     }
 
     if (diff > 0) {
-        return `${result} left`;
+        return `${result} ${t('utilsTimestampDifferenceStringTimeRemaining')}`;
     } else {
-        return `${result} overdue`;
+        return `${result} ${t('utilsTimestampDifferenceStringOverdue')}`;
     }
 }
 

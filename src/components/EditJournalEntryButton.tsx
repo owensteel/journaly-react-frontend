@@ -5,6 +5,7 @@ import axiosInstance from '../services/api';
 import Cookies from 'js-cookie';
 import { JournalEntry } from '../services/interfaces';
 import { useAlert } from './AlertContext';
+import { useTranslation } from 'react-i18next';
 
 interface EditJournalEntryButtonProps {
     fetchJournalEntriesCallback: () => void;
@@ -12,7 +13,8 @@ interface EditJournalEntryButtonProps {
 }
 
 const EditJournalEntryButton: React.FC<EditJournalEntryButtonProps> = ({ fetchJournalEntriesCallback, entryData }) => {
-    const { showAlert, confirm } = useAlert();
+    const { t } = useTranslation();
+    const { confirm } = useAlert();
 
     const { goalId } = useParams<{ goalId: string }>();
 
@@ -33,7 +35,7 @@ const EditJournalEntryButton: React.FC<EditJournalEntryButtonProps> = ({ fetchJo
     const handleSubmit = async () => {
         if (text.length < 1) {
             // Does user mean to delete the entry?
-            const userConfirmed = await confirm('Do you want to delete this Entry?', 'Entry deletion');
+            const userConfirmed = await confirm(t('editJournalEntryConfirmDeletionDialog'), t('editJournalEntryConfirmDeletionDialogHeader'));
             if (!userConfirmed) {
                 // No, stop here
                 return
@@ -64,12 +66,12 @@ const EditJournalEntryButton: React.FC<EditJournalEntryButtonProps> = ({ fetchJo
                 </span>
             </Fab>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Edit an entry</DialogTitle>
+                <DialogTitle>{t('editJournalEntryDialogHeader')}</DialogTitle>
                 <DialogContent>
                     <TextField
                         autoFocus
                         margin="dense"
-                        label="Text"
+                        label={t('createJournalEntryDialogTextLabel')}
                         type="text"
                         fullWidth
                         value={text}
@@ -80,10 +82,10 @@ const EditJournalEntryButton: React.FC<EditJournalEntryButtonProps> = ({ fetchJo
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="secondary">
-                        Cancel
+                        {t('alertContextCancel')}
                     </Button>
                     <Button onClick={handleSubmit} color="primary">
-                        Save
+                        {t('createJournalEntryDialogSave')}
                     </Button>
                 </DialogActions>
             </Dialog>

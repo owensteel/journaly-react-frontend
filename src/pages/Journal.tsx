@@ -9,8 +9,10 @@ import { getTimeDifferenceString } from "../utils/timestampUtils"
 import JournalReviewChart from '../components/JournalReviewChart'
 import CreateJournalEntryButton from '../components/CreateJournalEntryButton';
 import EditJournalEntryButton from '../components/EditJournalEntryButton';
+import { useTranslation } from 'react-i18next';
 
 const JournalPage: React.FC = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     const [journal, setJournal] = useState<Journal>();
@@ -56,7 +58,7 @@ const JournalPage: React.FC = () => {
                     <span className="material-symbols-outlined">
                         arrow_back
                     </span>
-                    Back to Dashboard
+                    {t('journalBackToDashboard')}
                 </Button>
             </Toolbar>
             <Container>
@@ -68,7 +70,8 @@ const JournalPage: React.FC = () => {
                         {journal.goal.description} — {
                             getTimeDifferenceString(
                                 new Date(),
-                                new Date(journal.goal.end_date)
+                                new Date(journal.goal.end_date),
+                                t
                             )
                         }
                     </Typography>
@@ -87,7 +90,7 @@ const JournalPage: React.FC = () => {
                     /* Chart */
                     <Container>
                         <Typography variant="overline" gutterBottom>
-                            Review chart
+                            {t('journalReviewChart')}
                         </Typography>
                         <JournalReviewChart entries={journalEntries} />
                     </Container>
@@ -95,7 +98,7 @@ const JournalPage: React.FC = () => {
                     /* Entries */
                     <Container>
                         <Typography variant="overline" gutterBottom>
-                            Journal entries for this Goal
+                            {t('journalJournalEntriesForThisGoal')}
                         </Typography>
                         <Box sx={{ minHeight: "250px" }}>
                             {journalEntries.map(journalEntry => (
@@ -114,7 +117,7 @@ const JournalPage: React.FC = () => {
                             {journal.entries.length < 1 ? (
                                 <Box padding={5}>
                                     <Typography variant="body2" color="text.secondary">
-                                        No journal entries.
+                                        {t('journalNoEntries')}
                                     </Typography>
                                 </Box>
                             ) : []}

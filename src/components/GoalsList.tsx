@@ -1,16 +1,17 @@
-// src/components/GoalsList.tsx
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, Typography, LinearProgress, Box, Fab } from '@mui/material';
 import Cookies from 'js-cookie';
 import axiosInstance from '../services/api';
-import SearchBar from './SearchBar';
+import SearchBar from './GoalsListSearchBar';
 import Loading from './Loading';
 import CreateGoalButton from './CreateGoalButton';
 import { useNavigate } from 'react-router-dom';
 import { Goal } from "../services/interfaces"
 import { getTimeDifferenceToNow, getTimeDifferenceString, getTimeCompletionPercentage } from "../utils/timestampUtils"
+import { useTranslation } from 'react-i18next';
 
 const GoalsList: React.FC = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     const [goals, setGoals] = useState<Goal[]>([]);
@@ -66,7 +67,8 @@ const GoalsList: React.FC = () => {
                                 {goal.description} — {
                                     getTimeDifferenceString(
                                         new Date(),
-                                        new Date(goal.end_date)
+                                        new Date(goal.end_date),
+                                        t
                                     )
                                 }
                             </Typography>
@@ -107,7 +109,7 @@ const GoalsList: React.FC = () => {
                 {sortedGoals.length < 1 ? (
                     <Box padding={5}>
                         <Typography variant="body2" color="text.secondary">
-                            No goals here!
+                            {t('goalsListNoGoalsHere')}
                         </Typography>
                     </Box>
                 ) : []}

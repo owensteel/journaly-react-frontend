@@ -9,12 +9,14 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { isAfter, startOfToday } from 'date-fns';
 import { useAlert } from './AlertContext';
 import formatDate from '../utils/formatDate';
+import { useTranslation } from 'react-i18next';
 
 interface CreateGoalButtonProps {
     fetchGoalsCallback: () => void;
 }
 
 const CreateGoalButton: React.FC<CreateGoalButtonProps> = ({ fetchGoalsCallback }) => {
+    const { t } = useTranslation();
     const { showAlert } = useAlert();
     const dayJsCurrentDate = dayjs(formatDate(new Date()))
 
@@ -28,7 +30,7 @@ const CreateGoalButton: React.FC<CreateGoalButtonProps> = ({ fetchGoalsCallback 
         if (isAfter(dateString, startOfToday())) {
             setEndDate(date);
         } else {
-            showAlert('Please select a date in the future.', 'error', 'Error');
+            showAlert(t('createGoalSelectDateInFuture'), 'error', 'Error');
         }
     };
 
@@ -45,13 +47,13 @@ const CreateGoalButton: React.FC<CreateGoalButtonProps> = ({ fetchGoalsCallback 
 
     const handleCreateGoal = async () => {
         if (title.length < 1 || description.length < 1) {
-            showAlert('Please provide a title and description.', 'error', 'Error');
+            showAlert(t('createGoalProvideTitleAndDescription'), 'error', 'Error');
             return
         }
 
         const endDateAsString = endDate.format()
         if (!isAfter(endDateAsString, startOfToday())) {
-            showAlert('Please select a date in the future.', 'error', 'Error');
+            showAlert(t('createGoalSelectDateInFuture'), 'error', 'Error');
             return
         }
 
@@ -78,10 +80,10 @@ const CreateGoalButton: React.FC<CreateGoalButtonProps> = ({ fetchGoalsCallback 
                 <span className="material-symbols-outlined">
                     add
                 </span>
-                Create Goal
+                {t('createGoalButtonText')}
             </Button>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Create a new Goal</DialogTitle>
+                <DialogTitle>{t('createGoalDialogHeader')}</DialogTitle>
                 <DialogContent>
                     <TextField
                         autoFocus
@@ -103,7 +105,7 @@ const CreateGoalButton: React.FC<CreateGoalButtonProps> = ({ fetchGoalsCallback 
                         onChange={(e) => setDescription(e.target.value)}
                     />
                     <Typography variant="overline" gutterBottom>
-                        End date to aim for
+                        {t('createGoalDialogEndDateLabel')}
                     </Typography>
                     <DateCalendar
                         value={endDate}
@@ -112,10 +114,10 @@ const CreateGoalButton: React.FC<CreateGoalButtonProps> = ({ fetchGoalsCallback 
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
-                        Cancel
+                        {t('alertContextCancel')}
                     </Button>
                     <Button onClick={handleCreateGoal} color="primary">
-                        Create
+                        {t('createGoalDialogCreate')}
                     </Button>
                 </DialogActions>
             </Dialog>

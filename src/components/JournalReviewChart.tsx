@@ -13,6 +13,7 @@ import {
 import dayjs from 'dayjs';
 import { JournalEntry } from '../services/interfaces'
 import theme from '../theme/theme'
+import { useTranslation } from 'react-i18next';
 
 // Register the required Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -22,13 +23,14 @@ interface JournalReviewChartProps {
 }
 
 const JournalReviewChart: React.FC<JournalReviewChartProps> = ({ entries }) => {
+    const { t } = useTranslation();
 
     // Not enough data
     if (entries.length < 1) {
         return (
             <Box>
                 <Typography variant="body2">
-                    There is currently not enough data to produce a chart.
+                    {t('journalReviewChartNotEnoughData')}
                 </Typography>
             </Box>
         );
@@ -59,10 +61,18 @@ const JournalReviewChart: React.FC<JournalReviewChartProps> = ({ entries }) => {
     const avgMinute = Math.floor(avgTimeOfDayMinutes % 60);
 
     const data = {
-        labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        labels: [
+            t('journalReviewChartWeekdayLabelSunday'),
+            t('journalReviewChartWeekdayLabelMonday'),
+            t('journalReviewChartWeekdayLabelTuesday'),
+            t('journalReviewChartWeekdayLabelWednesday'),
+            t('journalReviewChartWeekdayLabelThursday'),
+            t('journalReviewChartWeekdayLabelFriday'),
+            t('journalReviewChartWeekdayLabelSaturday')
+        ],
         datasets: [
             {
-                label: 'Journal Entries per Weekday',
+                label: t('journalReviewChartDatasetLabel'),
                 data: weekdayCounts,
                 backgroundColor: theme.palette.primary.light,
                 borderColor: theme.palette.primary.main,
@@ -78,11 +88,16 @@ const JournalReviewChart: React.FC<JournalReviewChartProps> = ({ entries }) => {
                 <span style={{ verticalAlign: 'middle' }} className="material-symbols-outlined">
                     lightbulb
                 </span>
-                <span style={{ verticalAlign: 'middle', marginLeft: '7.5px' }}>Recommendation</span>
+                <span style={{ verticalAlign: 'middle', marginLeft: '7.5px' }}>{t('journalReviewChartRecommendationHeader')}</span>
             </Typography>
-            <Typography variant="body2">
-                Consider making <strong>{`${avgHour}:${avgMinute < 10 ? '0' : ''}${avgMinute}`} on a {data.labels[avgWeekday]}</strong> your weekly journaling time for this goal.
-            </Typography>
+            <Typography variant="body2" dangerouslySetInnerHTML={
+                // Seemingly the only way to implement a translatable string with HTML formatting
+                {
+                    __html: t('journalReviewChartRecommendationBody')
+                        .replace("{TIME}", `<strong>${avgHour}:${avgMinute < 10 ? '0' : ''}${avgMinute}</strong>`)
+                        .replace("{WEEKDAY}", `<strong>${data.labels[avgWeekday]}</strong>`)
+                }
+            }></Typography>
         </Box>
     );
 };
