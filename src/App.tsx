@@ -15,6 +15,7 @@ import Dashboard from './pages/Dashboard';
 import Journal from './pages/Journal';
 import Welcome from './pages/Welcome';
 import NotFound from './pages/NotFound';
+import * as Notifications from './services/notifications'
 
 const App: React.FC = () => {
     const [userFetched, setUserFetched] = useState(false);
@@ -40,6 +41,8 @@ const App: React.FC = () => {
                     dispatch(login({ name, picture }));
 
                     setUserFetched(true);
+
+                    Notifications.init();
                 } catch (error) {
                     console.error('Error fetching user data:', error);
                 }
