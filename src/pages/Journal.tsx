@@ -131,9 +131,11 @@ const JournalPage: React.FC = () => {
                             {journalEntries.map(journalEntry => (
                                 <Card key={journalEntry.id} sx={{ position: 'relative', width: '100%', marginTop: 3 }}>
                                     <CardContent>
-                                        <Typography variant="body1" color="text.primary">
-                                            {journalEntry.text}
-                                        </Typography>
+                                        <div style={{wordWrap:"break-word"}}>
+                                            <Typography align="justify" variant="body1" color="text.primary">
+                                                {journalEntry.text}
+                                            </Typography>
+                                        </div>
                                         <Typography variant="body2" color="text.secondary">
                                             {new Date(journalEntry.created_at).toDateString()}
                                         </Typography>
