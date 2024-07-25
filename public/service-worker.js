@@ -1,11 +1,15 @@
 // public/service-worker.js
 
-self.addEventListener('push', (event) => {
+self.addEventListener('push', event => {
     const data = event.data.json();
+
     const options = {
-        body: data.body,
-        icon: data.icon,
-        badge: data.badge,
+        body: data.message,
+        // icon: '/path/to/icon.png',
+        // badge: '/path/to/badge.png',
+        data: {
+            url: data.url
+        }
     };
 
     event.waitUntil(
@@ -13,9 +17,10 @@ self.addEventListener('push', (event) => {
     );
 });
 
-self.addEventListener('notificationclick', (event) => {
+self.addEventListener('notificationclick', event => {
     event.notification.close();
+
     event.waitUntil(
-        clients.openWindow('http://localhost:3000')
+        clients.openWindow(event.notification.data.url)
     );
 });
