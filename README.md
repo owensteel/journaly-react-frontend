@@ -1,5 +1,13 @@
 The Typescript + React frontend for my sample resume project, "Journaly". This web frontend application is live on a subdomain of my personal portfolio website, at https://journaly.ow.st.
 
+* **Framework**: React, with logic and components written in Typescript.
+* **UI**: [Material UI library](https://mui.com/material-ui/), with some customisation.
+* **Testing**: Unit tests are written with the Jest test framework.
+
+ORM interfaces are used to data from the backend. Push notifications are implemented using the W3C standard.
+
+# What is it?
+
 It is a simple React application where users can journal their progress on certain goals with accountability.
 
 <blockquote>
