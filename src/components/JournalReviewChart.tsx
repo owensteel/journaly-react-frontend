@@ -93,7 +93,7 @@ const JournalReviewChart: React.FC<JournalReviewChartProps> = ({ entries }) => {
             <Typography variant="body2" dangerouslySetInnerHTML={
                 // Seemingly the only way to implement a translatable string with HTML formatting
                 {
-                    __html: t('journalReviewChartRecommendationBody')
+                    __html: t('journalReviewChartRecommendationBodyDaily')
                         .replace("{TIME}", `<strong>${avgHour}:${avgMinute < 10 ? '0' : ''}${avgMinute}</strong>`)
                         .replace("{WEEKDAY}", `<strong>${data.labels[avgWeekday]}</strong>`)
                 }
