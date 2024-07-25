@@ -1,4 +1,4 @@
-The Typescript + React frontend for my sample resume application, "Journaly".
+The Typescript + React frontend for my sample resume project, "Journaly". This web frontend application is live on a subdomain of my personal portfolio website, at https://journaly.ow.st.
 
 It is a simple React application where users can journal their progress on certain goals with accountability.
 
@@ -22,11 +22,7 @@ The journal also provides a chart giving data on when the user has historically 
 
 To follow the theme of accountability, a key feature is a push notifications system that reminds the user regularly to journal any updates they have on their progress for a goal.
 
-# Hosting
-
-This frontend application (at the time of writing) is hosted on a subdomain of my personal portfolio website, at https://journaly.ow.st.
-
-## Locally
+# Hosting locally
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 In the project directory, you can run:
